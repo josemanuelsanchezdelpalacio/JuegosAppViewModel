@@ -35,13 +35,16 @@ import com.dam2jms.juegosappviewmodel.ui.ViewModelSiete
 @Composable
 fun sieteScreen(navController: NavController, mvvm: ViewModelSiete) {
     val puntuacionJugador: Double by mvvm.puntuacionJugador.observeAsState(initial = 0.0)
-    val puntuacionPC: Double by mvvm.puntuacionPC.observeAsState(initial = 0.0)
+    val dineroGanadoJugador: Int by mvvm.dineroGanadoJugador.observeAsState(initial = 0)
+    val dineroGanadoPC: Int by mvvm.dineroGanadoPC.observeAsState(initial = 0)
     val resultado: String by mvvm.resultado.observeAsState("")
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text = "PUNTUACION JUGADOR: $puntuacionJugador\n PUNTUACION PC: $puntuacionPC") },
+                title = {
+                    Text(text = "VALOR CARTAS JUGADOR: $puntuacionJugador\n" + "APUESTA BANCA: ${mvvm.apuesta.value}")
+                },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.primary
@@ -57,30 +60,47 @@ fun sieteScreen(navController: NavController, mvvm: ViewModelSiete) {
         sieteBodyContent(
             modifier = Modifier.padding(paddingValues),
             mvvm = mvvm,
-            resultado = resultado
+            resultado = resultado,
+            dineroGanadoJugador = dineroGanadoJugador,
+            dineroGanadoPC = dineroGanadoPC
         )
     }
 }
 
 @Composable
-fun sieteBodyContent(modifier: Modifier, mvvm: ViewModelSiete, resultado: String){
-
+fun sieteBodyContent(
+    modifier: Modifier,
+    mvvm: ViewModelSiete,
+    resultado: String,
+    dineroGanadoJugador: Int,
+    dineroGanadoPC: Int
+) {
     var mostrarAlertDialog by rememberSaveable { mutableStateOf(false) }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(50.dp))
 
+        // Dinero ganado por el jugador
+        Text(text = "Dinero Ganado por Jugador: $dineroGanadoJugador")
+
+        // Dinero ganado por la PC
+        Text(text = "Dinero Ganado por PC: $dineroGanadoPC")
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         if (mostrarAlertDialog && resultado.isNotEmpty()) {
             AlertDialog(
                 text = {
                     Text(text = resultado)
                 },
-                onDismissRequest = { mostrarAlertDialog = false },
+                onDismissRequest = {
+                    mostrarAlertDialog = false
+                },
                 confirmButton = {
                     TextButton(onClick = { mostrarAlertDialog = false }) {
                         Text(text = "OK")
@@ -103,3 +123,4 @@ fun sieteBodyContent(modifier: Modifier, mvvm: ViewModelSiete, resultado: String
         }
     }
 }
+

@@ -114,7 +114,72 @@ fun nonesBodyContent(modifier: Modifier, mvvm: ViewModelNones) {
 
 
 //lo mismo pero hecho sin viewmodel
-/*@Composable
+/*
+ de numero según tus necesidades.
+
+
+
+
+User
+Hazlo guardando los impares en una lista 
+
+ChatGPT
+Claro, puedes modificar la función para almacenar los números impares en una lista. Aquí tienes una versión actualizada:
+
+kotlin
+Copy code
+@Composable
+fun obtenerImparesHasta(numero: Int): List<Int> {
+    val impares = mutableListOf<Int>()
+
+    for (i in 2..numero) {
+        if (esPrimo(i)) {
+            impares.add(i)
+        }
+    }
+
+    return impares
+}
+
+@Composable
+fun esPrimo(numero: Int): Boolean {
+    if (numero <= 1) {
+        return false
+    }
+
+    for (i in 2 until numero) {
+        if (numero % i == 0) {
+            return false
+        }
+    }
+
+    return true
+}
+Luego, en tu composición, puedes llamar a la función obtenerImparesHasta para obtener la lista de números primos e imprimirlos o realizar otras operaciones según tus necesidades. Por ejemplo:
+
+kotlin
+Copy code
+@Composable
+fun PruebaObtenerImpares() {
+    val limite = 20 // Puedes cambiar esto con el límite que desees
+
+    val impares = obtenerImparesHasta(limite)
+
+    Text("Números primos hasta $limite: $impares")
+}
+Asegúrate de ajustar los valores según tus requisitos.
+
+
+
+
+
+
+Message ChatGPT…
+
+ChatGPT can make mistakes. Consider checking important 
+
+
+@Composable
 fun nonesScreen(navController: NavController) {
 
     var nonesJugador by rememberSaveable { mutableStateOf("") }
